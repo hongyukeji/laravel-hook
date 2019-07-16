@@ -1,4 +1,4 @@
-# Hongyukeji [![Build Status](https://travis-ci.org/hongyukeji/hook.svg?branch=master)](https://travis-ci.org/hongyukeji/hook)
+# Hongyukeji [![Build Status](https://travis-ci.org/hongyukeji/laravel-hook.svg?branch=master)](https://travis-ci.org/hongyukeji/laravel-hook)
 
 Actions and filters in Laravel. WordPress-style. 
 
@@ -28,7 +28,7 @@ Hongyukeji is in no way unique in its approach. Laravel provides the Macroable t
 1. Install using Composer
 
 ```
-composer require hongyukeji/hook
+composer require hongyukeji/laravel-hook
 ```
 
 If you're using Laravel 5.5 or later you can start using the package at this point. Hongyukeji is auto-discovered by the Laravel framework.
