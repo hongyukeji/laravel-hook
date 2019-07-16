@@ -5,8 +5,8 @@
     "laravel",
     "wordpress",
     "action",
-    "hooks",
-    "hook",
+    "events",
+    "event",
     "filter",
     "action",
     "filters",
@@ -14,7 +14,7 @@
     "hook",
     "hooks"
   ],
-  "homepage": "https://github.com/hongyukeji/hook",
+  "homepage": "https://github.com/hongyukeji/laravel-hook",
   "license": "MIT",
   "authors": [
     {
@@ -32,22 +32,22 @@
   },
   "autoload": {
     "psr-4": {
-      "Hongyukeji\\": "src/"
+      "Hongyukeji\\Hook\\": "src/"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "HongyukejiTests\\": "tests/"
+      "HookTests\\": "tests/"
     }
   },
   "extra": {
     "laravel": {
       "providers": [
-        "Hongyukeji\\HookServiceProvider",
-        "Hongyukeji\\HookBladeServiceProvider"
+        "Hongyukeji\\Hook\\HookServiceProvider",
+        "Hongyukeji\\Hook\\HookBladeServiceProvider"
       ],
       "aliases": {
-        "Hongyukeji": "Hongyukeji\\Facades\\Hooks"
+        "Hook": "Hongyukeji\\Hook\\Facades\\Hooks"
       }
     }
   }

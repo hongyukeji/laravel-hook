@@ -5,7 +5,7 @@ namespace Hongyukeji\Hook;
 abstract class Hook
 {
     /**
-     * Holds the hook listeners.
+     * Holds the event listeners.
      *
      * @var array
      */

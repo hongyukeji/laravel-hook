@@ -1,16 +1,16 @@
 <?php
 
-namespace HongyukejiTests\Unit;
+namespace HookTests\Unit;
 
 use PHPUnit\Framework\TestCase;
-use TorMorten\Hongyukeji\Hooks;
-use TorMorten\Hongyukeji\HashedCallable;
+use Hongyukeji\Hook\Hooks;
+use Hongyukeji\Hook\HashedCallable;
 
 class HashedCallableTest extends TestCase
 {
     public function setUp(): void
     {
-        $this->hooks = new Hooks();
+        $this->events = new Hooks();
     }
 
     /**
@@ -22,11 +22,11 @@ class HashedCallableTest extends TestCase
             echo 'Action Fired, Baby!';
         };
 
-        $this->hooks->addAction('my_awesome_action', $callback);
+        $this->events->addAction('my_awesome_action', $callback);
 
         $hashedCallable = new HashedCallable($callback);
 
-        $this->assertTrue($this->hooks->getAction()->getListeners()->first()['callback']->is($hashedCallable));
+        $this->assertTrue($this->events->getAction()->getListeners()->first()['callback']->is($hashedCallable));
     }
 
     /** @test * */
@@ -40,10 +40,10 @@ class HashedCallableTest extends TestCase
             echo 'Foo Bars';
         };
 
-        $this->hooks->addAction('my_great_action', $callback);
-        $this->assertEquals($this->hooks->getAction()->getListeners()->count(), 1);
+        $this->events->addAction('my_great_action', $callback);
+        $this->assertEquals($this->events->getAction()->getListeners()->count(), 1);
 
-        $this->hooks->removeAction('my_great_action', $callback2);
-        $this->assertEquals($this->hooks->getAction()->getListeners()->count(), 0);
+        $this->events->removeAction('my_great_action', $callback2);
+        $this->assertEquals($this->events->getAction()->getListeners()->count(), 0);
     }
 }
