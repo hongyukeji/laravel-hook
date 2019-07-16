@@ -2,125 +2,164 @@
 
 namespace Hongyukeji\Hook;
 
-abstract class Hook
+class Hook
 {
     /**
-     * Holds the event listeners.
+     * Holds all registered actions.
      *
-     * @var array
+     * @var Hongyukeji\Hooks\Action
      */
-    protected $listeners = null;
+    protected $action;
 
+    /**
+     * Holds all registered filters.
+     *
+     * @var Hongyukeji\Hooks\Filter
+     */
+    protected $filter;
+
+    /**
+     * Construct the class.
+     */
     public function __construct()
     {
-        $this->listeners = collect([]);
+        $this->action = new Action();
+        $this->filter = new Filter();
     }
 
     /**
-     * Adds a listener.
+     * Get the action instance.
+     *
+     * @return Hongyukeji\Hooks\Action
+     */
+    public function getAction()
+    {
+        return $this->action;
+    }
+
+    /**
+     * Get the action instance.
+     *
+     * @return Hongyukeji\Hooks\Filter
+     */
+    public function getFilter()
+    {
+        return $this->filter;
+    }
+
+    /**
+     * Add an action.
      *
      * @param string $hook      Hook name
      * @param mixed  $callback  Function to execute
      * @param int    $priority  Priority of the action
      * @param int    $arguments Number of arguments to accept
      */
-    public function listen($hook, $callback, $priority = 20, $arguments = 1)
+    public function addAction($hook, $callback, $priority = 20, $arguments = 1)
     {
-        $this->listeners->push([
-            'hook'      => $hook,
-            'callback'  => $callback instanceof \Closure ? new HashedCallable($callback) : $callback,
-            'priority'  => $priority,
-            'arguments' => $arguments,
-        ]);
-
-        return $this;
+        $this->action->listen($hook, $callback, $priority, $arguments);
     }
 
     /**
-     * Removes a listener.
+     * Remove an action.
      *
      * @param string $hook     Hook name
      * @param mixed  $callback Function to execute
      * @param int    $priority Priority of the action
      */
-    public function remove($hook, $callback, $priority = 20)
+    public function removeAction($hook, $callback, $priority = 20)
     {
-        if ($this->listeners) {
-            $this->listeners->where('hook', $hook)
-                ->filter(function ($listener) use ($callback) {
-                    if ($callback instanceof \Closure) {
-                        return (new HashedCallable($callback))->is($listener['callback']);
-                    }
-
-                    return $callback === $listener['callback'];
-                })
-                ->where('priority', $priority)
-                ->each(function ($listener, $key) {
-                    $this->listeners->forget($key);
-                });
-        }
+        $this->action->remove($hook, $callback, $priority);
     }
 
     /**
-     * Remove all listeners with given hook in collection. If no hook, clear all listeners.
+     * Remove all actions.
      *
      * @param string $hook Hook name
      */
-    public function removeAll($hook = null)
+    public function removeAllActions($hook = null)
     {
-        if ($hook) {
-            if ($this->listeners) {
-                $this->listeners->where('hook', $hook)->each(function ($listener, $key) {
-                    $this->listeners->forget($key);
-                });
-            }
-        } else {
-            // no hook was specified, so clear entire collection
-            $this->listeners = collect([]);
-        }
+        $this->action->removeAll($hook);
     }
 
     /**
-     * Gets a sorted list of all listeners.
+     * Adds a filter.
      *
-     * @return array
+     * @param string $hook      Hook name
+     * @param mixed  $callback  Function to execute
+     * @param int    $priority  Priority of the action
+     * @param int    $arguments Number of arguments to accept
      */
-    public function getListeners()
+    public function addFilter($hook, $callback, $priority = 20, $arguments = 1)
     {
-        // $listeners = $this->listeners->values();
-        // sort by priority
-        // uksort($values, function ($a, $b) {
-        //     return strnatcmp($a, $b);
-        // });
-
-        return $this->listeners->sortBy('priority');
+        $this->filter->listen($hook, $callback, $priority, $arguments);
     }
 
     /**
-     * Gets the function.
+     * Remove a filter.
      *
-     * @param mixed $callback Callback
-     *
-     * @return mixed A closure, an array if "class@method" or a string if "function_name"
+     * @param string $hook     Hook name
+     * @param mixed  $callback Function to execute
+     * @param int    $priority Priority of the action
      */
-    protected function getFunction($callback)
+    public function removeFilter($hook, $callback, $priority = 20)
     {
-        if (is_string($callback) && strpos($callback, '@')) {
-            $callback = explode('@', $callback);
-
-            return [app('\\'.$callback[0]), $callback[1]];
-        } elseif (is_callable($callback)) {
-            return $callback;
-        } else {
-            throw new \Exception('$callback is not a Callable', 1);
-        }
+        $this->filter->remove($hook, $callback, $priority);
     }
 
     /**
-     * Fires a new action.
+     * Remove all filters.
      *
-     * @param string $action Name of action
-     * @param array  $args   Arguments passed to the action
+     * @param string $hook Hook name
      */
-    abstract public function fire($action, $args);
+    public function removeAllFilters($hook = null)
+    {
+        $this->filter->removeAll($hook);
+    }
+
+    /**
+     * Set a new action.
+     *
+     * Actions never return anything. It is merely a way of executing code at a specific time in your code.
+     *
+     * You can add as many parameters as you'd like.
+     *
+     * @param string $action     Name of hook
+     * @param mixed  $parameter1 A parameter
+     * @param mixed  $parameter2 Another parameter
+     *
+     * @return void
+     */
+    public function action()
+    {
+        $args = func_get_args();
+        $hook = $args[0];
+        unset($args[0]);
+        $args = array_values($args);
+        $this->action->fire($hook, $args);
+    }
+
+    /**
+     * Set a new filter.
+     *
+     * Filters should always return something. The first parameter will always be the default value.
+     *
+     * You can add as many parameters as you'd like.
+     *
+     * @param string $action     Name of hook
+     * @param mixed  $value      The original filter value
+     * @param mixed  $parameter1 A parameter
+     * @param mixed  $parameter2 Another parameter
+     *
+     * @return void
+     */
+    public function filter()
+    {
+        $args = func_get_args();
+        $hook = $args[0];
+        unset($args[0]);
+        $args = array_values($args);
+
+        return $this->filter->fire($hook, $args);
+    }
 }

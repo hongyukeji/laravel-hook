@@ -2,7 +2,7 @@
 
 namespace Hongyukeji\Hook;
 
-class Filter extends Hook
+class Filter extends HookAbstract
 {
     protected $value = '';
 

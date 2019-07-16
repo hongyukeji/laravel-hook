@@ -3,14 +3,14 @@
 namespace HookTests\Unit;
 
 use PHPUnit\Framework\TestCase;
-use Hongyukeji\Hook\Hooks;
+use Hongyukeji\Hook\Hook;
 use Hongyukeji\Hook\HashedCallable;
 
 class HashedCallableTest extends TestCase
 {
     public function setUp(): void
     {
-        $this->events = new Hooks();
+        $this->events = new Hook();
     }
 
     /**

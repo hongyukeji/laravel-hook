@@ -4,13 +4,13 @@ namespace HookTests\Unit;
 
 use HookTests\DummyClass;
 use PHPUnit\Framework\TestCase;
-use Hongyukeji\Hook\Hooks;
+use Hongyukeji\Hook\Hook;
 
 class FilterTest extends TestCase
 {
     public function setUp(): void
     {
-        $this->events = new Hooks();
+        $this->events = new Hook();
     }
 
     /**

@@ -14,7 +14,7 @@ class HookServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->singleton('hook', function ($app) {
-            return new Hooks();
+            return new Hook();
         });
     }
 }

@@ -4,7 +4,7 @@ namespace Hongyukeji\Hook\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
-class Hooks extends Facade
+class Hook extends Facade
 {
     /**
      * Get the registered name of the component.

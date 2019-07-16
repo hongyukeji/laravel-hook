@@ -2,7 +2,7 @@
 
 namespace Hongyukeji\Hook;
 
-class Action extends Hook
+class Action extends HookAbstract
 {
     /**
      * Filters a value.
