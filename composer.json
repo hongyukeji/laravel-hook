@@ -1,0 +1,54 @@
+{
+  "name": "hongyukeji/laravel-hook",
+  "description": "The WordPress filter/action system in Laravel",
+  "keywords": [
+    "laravel",
+    "wordpress",
+    "action",
+    "hooks",
+    "hook",
+    "filter",
+    "action",
+    "filters",
+    "actions",
+    "hook",
+    "hooks"
+  ],
+  "homepage": "https://github.com/hongyukeji/hook",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Tor Morten Jensen",
+      "homepage": "https://tormorten.no"
+    }
+  ],
+  "require": {
+    "php": ">=7.0",
+    "illuminate/support": ">=5.3",
+    "jeremeamia/superclosure": "^2.4"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^6.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Hongyukeji\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "HongyukejiTests\\": "tests/"
+    }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Hongyukeji\\HookServiceProvider",
+        "Hongyukeji\\HookBladeServiceProvider"
+      ],
+      "aliases": {
+        "Hongyukeji": "Hongyukeji\\Facades\\Hooks"
+      }
+    }
+  }
+}
